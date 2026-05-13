@@ -1,31 +1,65 @@
 import java.util.Scanner;
 
+class Point {
+    double x, y;
+
+    Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class Line implements Comparable<Line> {
+    Point p1, p2;
+    Double length;
+
+    Line(Point p1, Point p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.length = calculateLength();
+    }
+
+    private double calculateLength() {
+        return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Line line = (Line) obj;
+        return this.length.equals(line.length);
+    }
+
+    @Override
+    public int compareTo(Line other) {
+        return this.length.compareTo(other.length);
+    }
+}
+
 public class LineComparison {
     public static void main(String[] args) {
-        System.out.println("Welcome to Line Comparison Computation Program");
+        System.out.println("Welcome to Line Comparison Computation Program using OOP");
         Scanner sc = new Scanner(System.in);
 
         System.out.println("\nEnter coordinates for Line 1 (x1 y1 x2 y2):");
-        double x1 = sc.nextDouble(), y1 = sc.nextDouble();
-        double x2 = sc.nextDouble(), y2 = sc.nextDouble();
-        Double length1 = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+        Line line1 = new Line(new Point(sc.nextDouble(), sc.nextDouble()), new Point(sc.nextDouble(), sc.nextDouble()));
 
         System.out.println("Enter coordinates for Line 2 (x3 y3 x4 y4):");
-        double x3 = sc.nextDouble(), y3 = sc.nextDouble();
-        double x4 = sc.nextDouble(), y4 = sc.nextDouble();
-        Double length2 = Math.sqrt(Math.pow((x4 - x3), 2) + Math.pow((y4 - y3), 2));
+        Line line2 = new Line(new Point(sc.nextDouble(), sc.nextDouble()), new Point(sc.nextDouble(), sc.nextDouble()));
 
-        System.out.println("\nLength of Line 1: " + length1);
-        System.out.println("Length of Line 2: " + length2);
+        System.out.println("\nLength of Line 1: " + line1.length);
+        System.out.println("Length of Line 2: " + line2.length);
 
-        int comparisonResult = length1.compareTo(length2);
-
-        if (comparisonResult == 0) {
+        if (line1.equals(line2)) {
             System.out.println("Result: Both lines are equal.");
-        } else if (comparisonResult > 0) {
-            System.out.println("Result: Line 1 is greater than Line 2.");
         } else {
-            System.out.println("Result: Line 1 is less than Line 2.");
+            int res = line1.compareTo(line2);
+            if (res > 0) {
+                System.out.println("Result: Line 1 is greater than Line 2.");
+            } else {
+                System.out.println("Result: Line 1 is less than Line 2.");
+            }
         }
 
         sc.close();
